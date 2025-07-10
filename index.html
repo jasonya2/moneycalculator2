@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>組數與金額計算機</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+    }
+
+    .form-group {
+      display: grid;
+      grid-template-columns: 200px 120px 120px auto;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      max-width: 600px;
+    }
+
+    .form-group label {
+      font-size: 1.05em;
+    }
+
+    .form-group input[type="number"],
+    .form-group input[type="text"] {
+      font-size: 1em;
+      padding: 5px;
+      width: 100px;
+    }
+
+    .form-group input[readonly] {
+      background-color: #f0f0f0;
+      border: 1px solid #ccc;
+    }
+
+    .input-note {
+      font-size: 0.95em;
+      color: #555;
+    }
+
+    button {
+      font-size: 1.1em;
+      margin-top: 15px;
+      padding: 8px 20px;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 1.3em;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h2>組數與金額計算機</h2>
+
+  <!-- 1000 -->
+   <div class="form-group">
+    <label>1000 有幾張：</label>
+    <input type="number" id="b1000" value="0">
+  </div>
+    <!-- 500-->
+    <div class="form-group">
+    <label>500 有幾張：</label>
+    <input type="number" id="b500" value="0">
+  </div>
+    <!-- 100 -->
+  <div class="form-group">
+    <label>100 有幾組（20張/組）：</label>
+    <input type="number" id="g100" value="0">
+  </div>
+    <div class="form-group">
+    <label>100 有幾張：</label>
+    <input type="number" id="b100" value="0">
+  </div>
+    <!-- 50 -->
+  <div class="form-group">
+    <label>50 有幾組（10枚/組）：</label>
+    <input type="number" id="g50" value="0">
+  </div>
+    <div class="form-group">
+    <label>50 有幾枚：</label>
+    <input type="number" id="c50" value="0">
+    <input type="number" id="c50_pack" value="0">
+    <span class="input-note">袋子裡的錢</span>
+  </div>
+    <!-- 10 -->
+  <div class="form-group">
+    <label>10 有幾組（10枚/組）：</label>
+    <input type="number" id="g10" value="0">
+  </div>
+  <div class="form-group">
+    <label>10 有幾枚：</label>
+    <input type="number" id="c10" value="0">
+    <input type="number" id="c10_pack" value="0">
+    <span class="input-note">袋子裡的錢</span>
+  </div>
+    <!-- 5 -->
+  <div class="form-group">
+    <label>5 有幾組（10枚/組）：</label>
+    <input type="number" id="g5" value="0">
+  </div>
+   <div class="form-group">
+    <label>5 有幾枚：</label>
+    <input type="number" id="c5" value="0">
+    <input type="number" id="c5_pack" value="0">
+    <span class="input-note">袋子裡的錢</span>
+  </div>
+    <!-- 1 -->
+  <div class="form-group">
+    <label>1 有幾組（10枚/組）：</label>
+    <input type="number" id="g1" value="0">
+  </div>
+  <div class="form-group">
+    <label>1 有幾枚：</label>
+    <input type="number" id="c1" value="0">
+    <input type="number" id="c1_pack" value="0">
+    <span class="input-note">袋子裡的錢</span>
+  </div>
+  
+  <div class="form-group">
+    <label>現金（要扣掉的）：</label>
+    <input type="number" id="cash" value="0">
+  </div>
+
+  <button onclick="calculate()">計算總金額</button>
+
+  <div class="result" id="result">零用金：0 元</div>
+
+  <script>
+    function calculate() {
+      // 組數
+      const g100 = parseInt(document.getElementById("g100").value) || 0;
+      const g50 = parseInt(document.getElementById("g50").value) || 0;
+      const g10 = parseInt(document.getElementById("g10").value) || 0;
+	  const g5 = parseInt(document.getElementById("g5").value) || 0;
+      const g1 = parseInt(document.getElementById("g1").value) || 0;
+
+      // 紙鈔
+      const b1000 = parseInt(document.getElementById("b1000").value) || 0;
+      const b500 = parseInt(document.getElementById("b500").value) || 0;
+      const b100 = parseInt(document.getElementById("b100").value) || 0;
+
+      // 零錢枚數
+      const c50 = parseInt(document.getElementById("c50").value) || 0;
+      const c10 = parseInt(document.getElementById("c10").value) || 0;
+      const c5 = parseInt(document.getElementById("c5").value) || 0;
+      const c1 = parseInt(document.getElementById("c1").value) || 0;
+
+      // 整袋裝好的金額（直接輸入）
+      const c50_pack = parseInt(document.getElementById("c50_pack").value) || 0;
+      const c10_pack = parseInt(document.getElementById("c10_pack").value) || 0;
+      const c5_pack = parseInt(document.getElementById("c5_pack").value) || 0;
+      const c1_pack = parseInt(document.getElementById("c1_pack").value) || 0;
+
+      // 現金扣除
+      const cash = parseInt(document.getElementById("cash").value) || 0;
+
+      const total =
+        (100 * 20 * g100) +
+        (50 * 10 * g50) +
+        (10 * 10 * g10) +
+		(5 * 10 * g5)+
+        (1 * 10 * g1) +
+        (1000 * b1000) +
+        (500 * b500) +
+        (100 * b100) +
+        (50 * c50) + c50_pack +
+        (10 * c10) + c10_pack +
+        (5 * c5) + c5_pack +
+        (1 * c1) + c1_pack -
+        cash;
+
+      document.getElementById("result").innerText = "零用金：" + total + " 元";
+    }
+  </script>
+</body>
+</html>
